@@ -2,19 +2,26 @@ package be.intecbrussel.schoolsout.services;
 
 
 import be.intecbrussel.schoolsout.data.Gender;
+import be.intecbrussel.schoolsout.data.Grade;
 import be.intecbrussel.schoolsout.data.Person;
 import be.intecbrussel.schoolsout.data.User;
+import be.intecbrussel.schoolsout.repositories.GradeRepository;
 import be.intecbrussel.schoolsout.repositories.UserRepository;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class UserService {
 
     private UserRepository userRepository;
+    private GradeRepository gradeRepository;
 
 
     public UserService() {
+
         userRepository = new UserRepository();
+        gradeRepository = new GradeRepository();
     }
 
     //Maak een user. Iedere User die je maakt MOET ook een Person hebben
@@ -47,7 +54,22 @@ public class UserService {
 
     //TODO: Delete een user, en delete ook de Person EN de Grades van die Person
     public void deleteUser(){
+        System.out.println("Give the userName of the User you want to delete");
+        Scanner scanner = new Scanner(System.in);
+        String login = scanner.next();
 
+        User user = userRepository.getOneById(login);
+        Queue<Grade> gradeQueue = new LinkedList<>();
+        gradeQueue.addAll(gradeRepository.findAllGradesForUser(user));
+
+        while (gradeQueue.size()>0) {
+            Grade grade = gradeQueue.poll();
+            System.out.println("Deleting Grade: "+grade);
+            gradeRepository.deleteOne(grade.getId());
+
+        }
+        System.out.println("Deleting user: "+user);
+        userRepository.deleteOne(login);
     }
 
     //TODO:Udate de User. Je mag enkel vragen om het volgende te updaten: User.active, Person.firstName en Person.lastName
@@ -56,7 +78,11 @@ public class UserService {
     }
 
     //TODO: Print een User + Person van de database af door een username in te geven
-    public void findOneUserById(){
+    public void findOneUserById(String id){
+        System.out.println("Here is the user you are looking for: ");
+        User user = userRepository.getOneById(id);
+        System.out.println(user);
+
 
     }
 
@@ -64,6 +90,7 @@ public class UserService {
     public void findAllUsers(){
         System.out.println("Here are all users:");
         for (User user : userRepository.getAll()){
+            if(user.isActive())
             System.out.println(user);
         }
 

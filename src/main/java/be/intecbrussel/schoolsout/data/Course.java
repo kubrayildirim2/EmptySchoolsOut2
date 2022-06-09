@@ -1,9 +1,6 @@
 package be.intecbrussel.schoolsout.data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,10 +10,11 @@ public class Course {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(name = "name")
     private String name;
     private String description;
     private BigDecimal maxGradeYouCanGet;
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.REMOVE,CascadeType.PERSIST})
     private List<Grade> gradesOfCourse;
 
 
@@ -75,5 +73,15 @@ public class Course {
         this.description = description;
         this.maxGradeYouCanGet = maxGradeYouCanGet;
         this.gradesOfCourse = gradesOfCourse;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", maxGradeYouCanGet=" + maxGradeYouCanGet +
+                '}';
     }
 }

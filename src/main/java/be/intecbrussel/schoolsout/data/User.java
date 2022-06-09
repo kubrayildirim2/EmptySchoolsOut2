@@ -10,7 +10,7 @@ public class User {
     private String login;
     private String passwordHash;
     private boolean active;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true )
     private Person person;
 
     public User() {

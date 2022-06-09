@@ -5,7 +5,13 @@ import javax.persistence.Persistence;
 
 public class EMFactory {
 
+    private static EntityManagerFactory entityManagerFactory;
+
     public static EntityManagerFactory getEmf(){
-        return Persistence.createEntityManagerFactory("pearlDataBase");
+        if (entityManagerFactory == null) {
+
+            entityManagerFactory = Persistence.createEntityManagerFactory("pearlDataBase");
+        }
+        return entityManagerFactory;
     }
 }

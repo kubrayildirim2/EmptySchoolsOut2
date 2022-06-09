@@ -8,6 +8,7 @@ import be.intecbrussel.schoolsout.services.CourseService;
 import be.intecbrussel.schoolsout.services.GradeService;
 import be.intecbrussel.schoolsout.services.UserService;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Scanner;
 //TODO: belijk hoe je usages verwijdert
@@ -28,7 +29,7 @@ public class MainClass {
 
                     switch (choiceOne){
                         case 1:choiceUsers();break;
-                        case 2:choiceUsers();break;
+                        case 2:choiceCourses();break;
                         case 3:choiceGrades();break;
                     }
 
@@ -37,8 +38,6 @@ public class MainClass {
                 choices();
 
             }
-
-
     }
 
     public static void getChoice(){
@@ -53,7 +52,6 @@ public class MainClass {
                 System.out.println("Invalid choice.");
             }
         }
-
     }
 
     private static void choiceUsers()  {
@@ -63,6 +61,8 @@ public class MainClass {
         while (choiceTwo==9) {
             System.out.println("What do you want to look at? \n1: See All Users \n2: See One User\n3: Add One User\n4: Edit One User\n5: Delete One User\n6: See all Users per Course\n0: End");
             choiceTwo = scanner.nextInt();
+            scanner.nextLine();
+
             if (choiceTwo==0)break;
             if(choiceTwo<1||choiceTwo>6){
                 choiceTwo = 9;
@@ -72,7 +72,11 @@ public class MainClass {
 
             switch (choiceTwo){
                 case 1:userService.findAllUsers();break;//LEVEL 1
-                case 2:userService.findOneUserById();break;//LEVEL 1
+                case 2:
+                    System.out.println("Please enter the user id");
+                    String userid = scanner.nextLine();
+                    userService.findOneUserById(userid);
+                    break;//LEVEL 1
                 case 3:userService.createUser();break;//LEVEL 2
                 case 4:userService.updateUser();break;//LEVEL 3
                 case 5:userService.deleteUser();break;//LEVEL 3
@@ -90,6 +94,7 @@ public class MainClass {
         while (choiceTwo==9) {
             System.out.println("What do you want to look at? \n1: See All Courses\n2: See One Course\n3: Add One Course\n4: Edit One Course\n5: Delete One Course\n0: End");
             choiceTwo = scanner.nextInt();
+            scanner.nextLine();
             if (choiceTwo==0)break;
             if(choiceTwo<1||choiceTwo>5){
                 choiceTwo = 9;
@@ -100,7 +105,7 @@ public class MainClass {
         switch (choiceTwo){
             case 1:courseService.findAllCourses();break;//LEVEL 1
             case 2:courseService.findOneCourseById();break;//LEVEL 1
-            case 3:courseService.createCourse();break;//LEVEL 1
+            case 3: courseService.createCourse();break;//LEVEL 1
             case 4:courseService.updateCourse();break;//LEVEL 2
             case 5:courseService.deleteCourse();break;//LEVEL 2
 
